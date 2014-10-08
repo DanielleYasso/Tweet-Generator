@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# import sys
+import sys
 import random
 
 def make_chains(corpus, num_gram):
@@ -76,7 +76,8 @@ def main(*args):
     return random_text
 
 if __name__ == "__main__":
-    main()
+    args = sys.argv
+    main(args)
 
 
 

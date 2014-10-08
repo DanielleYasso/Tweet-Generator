@@ -11,8 +11,8 @@ ats = os.environ.get('ACCESS_TOKEN_SECRET')
 
 api = twitter.Api(consumer_key=tapi, 
     consumer_secret=capi, 
-    acess_token_key = atk, 
-    access_token_secret = ats)
+    access_token_key=atk, 
+    access_token_secret=ats)
 
 print api.VerifyCredentials()
 
