@@ -11,8 +11,7 @@ def make_chains(corpus):
     words = corpus.split()
     # using range and length of words list
     # for index in range(len(words)-2):
-    #     try:
-    #         first, second, third = words[index], words[index+1], words[index+2]
+    #     first, second, third = words[index], words[index+1], words[index+2]
     # or, using enumerate:
     for i, word in enumerate(words):
         try:
@@ -21,9 +20,6 @@ def make_chains(corpus):
             break
         key = (first, second)
         d.setdefault(key, []).append(third)
-
-    # empty_list = filter(lambda x: "" in x[0], d.keys())
-    # print empty_list
 
     return d
 
@@ -45,11 +41,9 @@ def make_text(chains):
     e_o_s = ['.', '!', '?']
 
     while True:
-        try:
-            # get third word from list of words for key
-            third = random.choice(chains[key])
-        except KeyError:
-            break
+
+        # get third word from list of words for key
+        third = random.choice(chains.get(key, "...um..."))
 
         # add words to text to be printed
         new_text.append(third)
@@ -67,11 +61,12 @@ def make_text(chains):
 
 def main():
     args = sys.argv
-    filename = args[1] 
 
-    # Change this to read input_text from a file
-    f = open(filename)
-    input_text = f.read()
+    input_text = ""
+
+    for filename in args[1:]:
+        f = open(filename)
+        input_text += f.read()
 
     chain_dict = make_chains(input_text)
     random_text = make_text(chain_dict)
@@ -79,3 +74,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
