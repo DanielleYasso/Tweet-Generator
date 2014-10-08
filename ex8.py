@@ -3,10 +3,10 @@
 import sys
 import random
 
-def make_chains(corpus):
+def make_chains(corpus, num_gram):
     """Takes an input text as a string and returns a dictionary of
     markov chains."""
-
+    
     d = {}
     words = corpus.split()
     # using range and length of words list
@@ -14,13 +14,14 @@ def make_chains(corpus):
     #     first, second, third = words[index], words[index+1], words[index+2]
     # or, using enumerate:
     for i, word in enumerate(words):
-        try:
-            first, second, third = words[i], words[i+1], words[i+2]
-        except IndexError:
-            break
-        key = (first, second)
-        d.setdefault(key, []).append(third)
-
+        word_list = []
+        for index in range(num_gram + 1):
+            try:
+                word_list.append(words[i + index])
+            except IndexError:
+                break
+        key = tuple(word_list[:-1])
+        d.setdefault(key, []).append(word_list[-1])
     return d
 
 def make_text(chains):
@@ -34,30 +35,31 @@ def make_text(chains):
 
     new_text = []
     # unpack key into first and second words and add to print list
-    first, second = key
-    new_text.extend([first, second])
+    word_list_for_key = list(key)
+
+    new_text.extend(list(key))
 
     # define end of sentence for when to stop while loop below
     e_o_s = ['.', '!', '?']
 
     while True:
 
-        # get third word from list of words for key
-        third = random.choice(chains.get(key, "...um..."))
+        # get a word from list of words for key
+        last = random.choice(chains.get(key, "...um..."))
 
         # add words to text to be printed
-        new_text.append(third)
+        new_text.append(last)
 
-        # if third was end of sentence, break
-        if third[-1] in e_o_s:
+        # if last was end of sentence, break
+        if last[-1] in e_o_s:
             break
             
         # update key for next loop
-        key = (second, third)
-        # update second variable for use in next key update
-        second = key[1]
+        word_list_for_key.append(last)
+        key = tuple(word_list_for_key[1:])
 
-    return " ".join(new_text)
+    # return " ".join(new_text)
+    return "hi"
 
 def main():
     args = sys.argv
@@ -68,7 +70,9 @@ def main():
         f = open(filename)
         input_text += f.read()
 
-    chain_dict = make_chains(input_text)
+    num_gram = int(raw_input("how many words per key would you like? "))
+
+    chain_dict = make_chains(input_text, num_gram)
     random_text = make_text(chain_dict)
     print random_text
 
