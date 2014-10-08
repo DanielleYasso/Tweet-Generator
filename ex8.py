@@ -9,17 +9,13 @@ def make_chains(corpus, num_gram):
     
     d = {}
     words = corpus.split()
-    # using range and length of words list
-    # for index in range(len(words)-2):
-    #     first, second, third = words[index], words[index+1], words[index+2]
-    # or, using enumerate:
-    for i, word in enumerate(words):
+
+    # using enumerate:
+    # for i, word in enumerate(words):
+    for i in range(len(words)-num_gram):
         word_list = []
         for index in range(num_gram + 1):
-            try:
-                word_list.append(words[i + index])
-            except IndexError:
-                break
+            word_list.append(words[i + index])
         key = tuple(word_list[:-1])
         d.setdefault(key, []).append(word_list[-1])
     return d
@@ -32,7 +28,7 @@ def make_text(chains):
     # sentence_start_list = [key for key in chains.keys() if key[0][0].isupper()]
     sentence_start_list = filter(lambda x: x[0][0].isupper(), chains.keys())
     key = random.choice(sentence_start_list)
-
+   
     new_text = []
     # unpack key into first and second words and add to print list
     word_list_for_key = list(key)
@@ -42,6 +38,7 @@ def make_text(chains):
     # define end of sentence for when to stop while loop below
     e_o_s = ['.', '!', '?']
 
+
     while True:
 
         # get a word from list of words for key
@@ -49,17 +46,19 @@ def make_text(chains):
 
         # add words to text to be printed
         new_text.append(last)
+        character_count = len(" ".join(new_text))
 
         # if last was end of sentence, break
-        if last[-1] in e_o_s:
+        if last[-1] in e_o_s and character_count > 140:
             break
             
-        # update key for next loop
+        # update word_list_for_key and key for next loop
         word_list_for_key.append(last)
-        key = tuple(word_list_for_key[1:])
+        word_list_for_key = word_list_for_key[1:]
+        key = tuple(word_list_for_key)
 
-    # return " ".join(new_text)
-    return "hi"
+    return " ".join(new_text)
+    # return "hi"
 
 def main():
     args = sys.argv
