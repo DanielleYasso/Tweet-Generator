@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys
+# import sys
 import random
 
 def make_chains(corpus, num_gram):
@@ -60,8 +60,8 @@ def make_text(chains):
     return " ".join(new_text)
     # return "hi"
 
-def main():
-    args = sys.argv
+def main(*args):
+    # args = sys.argv
 
     input_text = ""
 
@@ -73,7 +73,7 @@ def main():
 
     chain_dict = make_chains(input_text, num_gram)
     random_text = make_text(chain_dict)
-    print random_text
+    return random_text
 
 if __name__ == "__main__":
     main()
