@@ -20,7 +20,7 @@ args = sys.argv
 tweet = ex8.main(args)
 
 print tweet
-user_input = raw_input("do you want to post this tweet? y/n")
+user_input = raw_input("do you want to post this tweet? y/n ")
 if user_input == "y":
     status = api.PostUpdate(tweet)
 

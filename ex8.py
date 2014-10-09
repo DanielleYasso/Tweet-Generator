@@ -43,13 +43,21 @@ def make_text(chains):
 
         # get a word from list of words for key
         last = random.choice(chains.get(key, "...um..."))
+        character_count_check = new_text + [last]
+        character_count = " ".join(character_count_check)
+        characters = len(character_count)
 
         # add words to text to be printed
-        new_text.append(last)
-        character_count = len(" ".join(new_text))
+        if characters > 140:
+            return " ".join(new_text)
 
-        # if last was end of sentence, break
-        if last[-1] in e_o_s and character_count > 140:
+        new_text.append(last)
+        # character_count = len(" ".join(new_text))
+
+        # # if last was end of sentence, break
+        # if character_count >= 140:
+        #     break
+        if last[-1] in e_o_s:
             break
             
         # update word_list_for_key and key for next loop
@@ -60,7 +68,7 @@ def make_text(chains):
     return " ".join(new_text)
     # return "hi"
 
-def main(*args):
+def main(args):
     # args = sys.argv
 
     input_text = ""
